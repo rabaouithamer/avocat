@@ -12,6 +12,7 @@ import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -38,34 +39,73 @@ public class sendmail {
  
 		// Step1
 		System.out.println("\n 1st ===> setup Mail Server Properties..");
-		mailServerProperties = System.getProperties();
-		mailServerProperties.put("mail.smtp.port", "587");
-		mailServerProperties.put("mail.smtp.auth", "true");
-		mailServerProperties.put("mail.smtp.starttls.enable", "true");
-		System.out.println("Mail Server Properties have been setup successfully..");
- 
-		// Step2
-		System.out.println("\n\n 2nd ===> get Mail Session..");
-		getMailSession = Session.getDefaultInstance(mailServerProperties, null);
-		generateMailMessage = new MimeMessage(getMailSession);
-		generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress("guesmianoir@gmail.com"));
-		generateMailMessage.addRecipient(Message.RecipientType.CC, new InternetAddress("test2@crunchify.com"));
-		generateMailMessage.setSubject("Greetings from Crunchify..");
-		String emailBody = "Test email by Crunchify.com JavaMail API example. " + "<br><br> Regards, <br>Crunchify Admin";
-		generateMailMessage.setContent(emailBody, "text/html");
-		System.out.println("Mail Session has been created successfully..");
- 
-		// Step3
-		System.out.println("\n\n 3rd ===> Get Session and Send mail");
-		Transport transport = getMailSession.getTransport("smtp");
- 
-		// Enter your correct gmail UserID and Password
-		// if you have 2FA enabled then provide App Specific Password
-		transport.connect("smtp.gmail.com", "mohamed.anwar-guesmi@enis.tn", "anoirGu19031993Gu");
-		transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
-		transport.close();
-	}
+               Properties props = System.getProperties();
+    props.put("mail.smtp.starttls.enable", true); // added this line
+    props.put("mail.smtp.host", "smtp.gmail.com");
+    props.put("mail.smtp.user", "guesmianoir@gmail.com");
+    props.put("mail.smtp.password", "anoirGu19031993Gu");
+    props.put("mail.smtp.port", "587");
+    props.put("mail.smtp.auth", true);
+
+    Session session = Session.getInstance(props,null);
+    MimeMessage message = new MimeMessage(session);
+
+    System.out.println("Port: "+session.getProperty("mail.smtp.port"));
+
+    // Create the email addresses involved
+    try {
+        InternetAddress from = new InternetAddress("guesmianoir@gmail.com");
+        message.setSubject("Yes we can");
+        message.setFrom(from);
+        message.addRecipients(Message.RecipientType.TO, InternetAddress.parse("hamdi.ankoud@gmail.com"));
+
+        // Create a multi-part to combine the parts
+        Multipart multipart = new MimeMultipart("alternative");
+
+        // Create your text message part
+        BodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setText("some text to send");
+
+        // Add the text part to the multipart
+        multipart.addBodyPart(messageBodyPart);
+
+        // Create the html part
+        messageBodyPart = new MimeBodyPart();
+        String htmlMessage = "Our html text";
+        messageBodyPart.setContent(htmlMessage, "text/html");
+
+
+        // Add html part to multi part
+        multipart.addBodyPart(messageBodyPart);
+
+        // Associate multi-part with message
+        message.setContent(multipart);
+
+        // Send message
+        Transport transport = session.getTransport("smtp");
+        transport.connect("smtp.gmail.com", "guesmianoir@gmail.com", "anoirGu19031993Gu");
+        System.out.println("Transport: "+transport.toString());
+        transport.sendMessage(message, message.getAllRecipients());
+
+
+    } catch (AddressException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    } catch (MessagingException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+                
+                
+                
+                
+        }
+}
+                
+                
+                
+                
+	
    
 
 
-}

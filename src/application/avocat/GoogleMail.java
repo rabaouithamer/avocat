@@ -92,6 +92,11 @@ public class GoogleMail extends javax.swing.JFrame {
         jLabel2.setText("Mail : ");
 
         resetbutton.setText("reset");
+        resetbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetbuttonActionPerformed(evt);
+            }
+        });
 
         clientmaillabel.setText("client mail : ");
 
@@ -340,6 +345,12 @@ public class GoogleMail extends javax.swing.JFrame {
         GoogleMail c =new GoogleMail() ;
         c.setVisible(true);
     }//GEN-LAST:event_buttonContactActionPerformed
+
+    private void resetbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetbuttonActionPerformed
+        mail.setText("");
+        bossmail.setText("");
+        
+    }//GEN-LAST:event_resetbuttonActionPerformed
 
     /**
      * @param args the command line arguments
