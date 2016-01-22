@@ -41,7 +41,7 @@ public class ApplicationAvocat {
              preparedStatement.setString(6, "Test3");
              preparedStatement.setString(7, "Test3");
              preparedStatement.setInt(8, 4);
-             preparedStatement.executeUpdate(); 
+           preparedStatement.executeUpdate(); 
              preparedStatement.close();
     }
     

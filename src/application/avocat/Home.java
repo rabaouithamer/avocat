@@ -38,7 +38,7 @@ public class Home extends javax.swing.JFrame {
                       ResultSet rsclient = stmtclient.executeQuery( client );
                       ResultSet rsprocede = stmtprocede.executeQuery( procede );
                       String date = "";
-                        String nom = "";
+                      String nom = "";
                       String prenom = "";
                       String cases = "";
                       String lieu = "";
